@@ -1,16 +1,16 @@
 <template>
-  <div>   
+  <div>
     <form class="login-box">
       <div class="logo">
         <h1>Tap Racer</h1>
       </div>
       <div class="form-group">
-        <input type="text" class="border-btn form-control" placeholder="Enter name" v-model="name">
+        <input type="text" class="border-btn form-control" placeholder="Enter name">
       </div>
       <div class="form-group">
-        <input type="password" class="border-btn form-control" placeholder="Enter password" v-model="password">
+        <input type="password" class="border-btn form-control" placeholder="Enter password">
       </div>
-      <button type="submit" class="btn log-btn btn-block border-btn" v-on:click="login">Login</button>
+      <button type="submit" class="btn log-btn btn-block border-btn">Login</button>
       <button v-on:click="loginfb()" class="btn btn-primary btn-block border-btn">Login with Facebook</button>
     </form>
   </div>
