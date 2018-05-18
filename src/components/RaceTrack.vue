@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="logo">
-      <h1 class="text-center">Tap Racer</h1>
+      <div class="container">
+      <div class="header">
+
+          <img src="@/assets/logo1.png" alt="logo" />
+        </div>
+      </div>
     </div>
     <div class="track">
       <div class="track-line" v-for="racer in racers" :key="racer.id">
@@ -57,7 +62,7 @@ export default {
   },
   methods: {
     moveForward1 () {
-      if (this.racers[0].position == 1000) {
+      if (this.racers[0].position >= 1150) {
         swal({
           title: '{Player 1} win!',
           imageUrl: 'https://usatftw.files.wordpress.com/2015/02/dancecamdude2.gif',
@@ -97,21 +102,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .header img {
+    width: 200px;
+    margin-left: 490px;
+    }
+
   .logo {
-    background-color: #202020;
+    background-color: #252525;
     font-family: 'Orbitron', sans-serif;
     color: white;
     -webkit-text-stroke: 2px #231f20;
     border-top: 5px solid white;
     border-bottom: 5px solid white;
     border-image: url(../assets/border-pattern.png) 30 round;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     padding-top: 8px;
   }
 
   .track {
     padding: 40px 0;
-    background-color: #202020;
+    background-color: #252525;
   }
   .track-line {
     width: 100%;
