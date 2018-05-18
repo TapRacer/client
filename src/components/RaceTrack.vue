@@ -9,8 +9,8 @@
       </div>
     </div>
     <div class="track">
-      <div class="track-line" v-for="racer in racers" :key="racer.id">
-        <img class="car" src="@/assets/red_car.png" v-bind:style="{ left: racer.position + 'px' }" />
+      <div class="row" v-for="(racer,index) in racers" :no="index" :key="racer.name">
+        <img src="@/assets/red_car.png" v-bind:style="{ left: racer.position + 'px' }" />
       </div>
     </div>
 
@@ -24,80 +24,92 @@
         <button class="btn btn-primary" type="button" id="tap-player-2" @click="hitPlayer1()">Hit Player 1</button>
       </div>
     </div>
+    <div class="container" v-for="(racer,index) in racers" :no="index" :key="racer.name" v-if="racer.name == button">
+      <button type="button" id="tap-player-1" @click="moveForward(index)">Player 1</button>
+      <button type="button" id="tap-player-1" @click="hitPlayer(index == 0 ? 1 : 0)">Hit Player 2</button>
+    </div>
   </div>
 </template>
 
 <script>
-import * as firebase from 'firebase'
-const config = {
-  databaseURL: 'https://tap-racer-a4012.firebaseio.com',
-  projectId: 'tap-racer-a4012'
-}
+  import { db } from '@/firebase.js'
+  import store from '@/store.js'
 
-const firebaseApp = firebase.initializeApp(config)
-const db = firebaseApp.database()
-const racersRef = db.ref('racers')
+  const arena = localStorage.getItem('arena')
+  const racersRef = db.ref(arena)
 
-export default {
-  created () {
-    swal({
-      title: 'Auto close alert!',
-      text: 'I will close in 1 seconds.',
-      timer: 2000,
-      onOpen: () => {
-        swal.showLoading()
-      }
-    }).then((result) => {
-      if (
-        // Read more about handling dismissals
-        result.dismiss === swal.DismissReason.timer
-      ) {
-        console.log('I was closed by the timer')
-      }
-    })
-  },
-  name: 'RaceTrack',
-  firebase: {
-    racers: racersRef
-  },
-  methods: {
-    moveForward1 () {
-      if (this.racers[0].position >= 1150) {
-        swal({
-          title: '{Player 1} win!',
-          imageUrl: 'https://usatftw.files.wordpress.com/2015/02/dancecamdude2.gif',
-          imageWidth: 400,
-          imageHeight: 200,
-          imageAlt: 'Custom image',
-          animation: false
-        })
-      }
-      racersRef
-        .child('racer_1')
-        .child('position')
-        .set(this.racers[0].position + 20)
-
+ export default {
+    name: 'RaceTrack',
+    firebase: {
+      racers: racersRef
     },
-    moveForward2 () {
-      racersRef
-        .child('racer_2')
-        .child('position')
-        .set(this.racers[1].position + 20)
+    created: function () {
+      let key = []
+      this.racers.forEach(listracer => {
+          key.push(listracer[".key"])
+      })
+      this.nameKey = key
+      swal({
+        title: 'Auto close alert!',
+        text: 'I will close in 1 seconds.',
+        timer: 2000,
+        onOpen: () => {
+          swal.showLoading()
+        }
+      }).then((result) => {
+        if (
+          // Read more about handling dismissals
+          result.dismiss === swal.DismissReason.timer
+        ) {
+          console.log('I was closed by the timer')
+        }
+      })
     },
-    hitPlayer1 () {
-      racersRef
-        .child('racer_1')
-        .child('position')
-        .set(this.racers[0].position - 10)
+    updated: function () {
+        if(this.racers["0"].position>=1100){
+          alert(store.state.username)
+          racersRef
+          .child(this.nameKey[0])
+          .child('position')
+          .set(0)
+          racersRef
+          .child(this.nameKey[1])
+          .child('position')
+          .set(0)
+        }
+        if(this.racers["1"].position>=1100){
+          alert(store.state.username)
+          racersRef
+          .child(this.nameKey[0])
+          .child('position')
+          .set(0)
+          racersRef
+          .child(this.nameKey[1])
+          .child('position')
+          .set(0)
+        }
     },
-    hitPlayer2 () {
-      racersRef
-        .child('racer_2')
-        .child('position')
-        .set(this.racers[1].position - 10)
+    data: function () {
+      return {
+        nameKey: '',
+        button: localStorage.getItem('username')
+      }
+    },
+    methods: {
+      moveForward (index) {
+        racersRef
+          .child(this.nameKey[index])
+          .child('position')
+          .set(this.racers[index].position + 20)
+      },
+      hitPlayer (index) {
+        racersRef
+          .child(this.nameKey[index])
+          .child('position')
+          .set(this.racers[index].position - 10)
+      },
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
