@@ -6,20 +6,20 @@
       </div>
 
       <div class="form-group">
-        <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+        <input type="text" class="border-btn form-control" placeholder="Enter name" v-model="name">
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" placeholder="Enter password">
+        <input type="password" class="border-btn form-control" placeholder="Enter password" v-model="password">
       </div>
-      <button type="submit" class="btn log-btn btn-block">Login</button>
-      <button v-on:click="loginfb()" class="btn btn-primary btn-block">Login with Facebook</button>
+      <button type="submit" class="btn log-btn btn-block border-btn" v-on:click="login">Login</button>
+      <button v-on:click="loginfb()" class="btn btn-primary btn-block border-btn">Login with Facebook</button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-
+  
 }
 </script>
 
@@ -41,8 +41,10 @@ export default {
 .log-btn {
   background-color: #FA0012;
   color: white;
-  border: 2px solid #231f20;
   
+}
+.border-btn {
+  border: 2px solid #231f20;
 }
 @media only screen and (min-width: 680px) {
   .login-box {
