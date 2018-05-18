@@ -17,8 +17,8 @@
 <script>
 import * as firebase from 'firebase'
 const config = {
-  databaseURL: 'https://tap-racer-a4012.firebaseio.com',
-  projectId: 'tap-racer-a4012'
+  databaseURL: 'https://tapcar-78e9d.firebaseio.com/',
+  projectId: 'tapcar-78e9d'
 }
 
 const firebaseApp = firebase.initializeApp(config)
@@ -29,6 +29,14 @@ export default {
   name: 'RaceTrack',
   firebase: {
     racers: racersRef
+  },
+  data: function () {
+    return {
+      room: {
+        name: '',
+        position: ''
+      }
+    }
   },
   methods: {
     moveForward1 () {
