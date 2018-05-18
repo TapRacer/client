@@ -34,7 +34,6 @@
 <script>
   import { db } from '@/firebase.js'
   import store from '@/store.js'
-
   const arena = localStorage.getItem('arena')
   const racersRef = db.ref(arena)
 

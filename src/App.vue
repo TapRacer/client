@@ -12,5 +12,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: grey;
+    color: #231f20;
   }
 </style>
