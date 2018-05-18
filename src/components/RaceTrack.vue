@@ -1,32 +1,25 @@
 <template>
   <div>
     <div class="logo">
-      <div class="container">
       <div class="header">
 
           <img src="@/assets/logo1.png" alt="logo" />
         </div>
-      </div>
     </div>
     <div class="track">
-      <div class="row" v-for="(racer,index) in racers" :no="index" :key="racer.name">
-        <img src="@/assets/red_car.png" v-bind:style="{ left: racer.position + 'px' }" />
+      <div class="track-line" v-for="(racer,index) in racers" :no="index" :key="racer.name">
+        <img class="car" src="@/assets/red_car.png" v-bind:style="{ left: racer.position + 'px' }" />
       </div>
     </div>
 
-    <div id="tap-button">
-      <div class="col-md-6 justify-content-center">
-        <button class="btn btn-primary rounded-button" type="button" id="tap-player-1" @click="moveForward1()">Player 1</button>
-        <button class="btn btn-primary rounded-button" type="button" id="tap-player-2" @click="moveForward2()">Player 2</button>
+    <div id="tap-button"  v-for="(racer,index) in racers" :no="index" :key="racer.name" v-if="racer.name == button && racers.length == 2">
+      <div class="col-md-6 justify-content-center" >
+        <button class="btn btn-primary rounded-button" type="button" id="tap-player-1" @click="moveForward(index)">Move</button>
       </div>
-      <div class="col-md-6 justify-content-center">
-        <button class="btn btn-primary" type="button" id="tap-player-1" @click="hitPlayer2()">Hit Player 2</button>
-        <button class="btn btn-primary" type="button" id="tap-player-2" @click="hitPlayer1()">Hit Player 1</button>
+      <div class="col-md-6 justify-content-center" >
+        <button class="btn btn-primary" v-if="index==1" type="button" id="tap-player-1" @click="hitPlayer(0)">Hit Enemy</button>
+        <button class="btn btn-primary" v-if="index==0" type="button" id="tap-player-1" @click="hitPlayer(1)">Hit Enemy</button>
       </div>
-    </div>
-    <div class="container" v-for="(racer,index) in racers" :no="index" :key="racer.name" v-if="racer.name == button">
-      <button type="button" id="tap-player-1" @click="moveForward(index)">Player 1</button>
-      <button type="button" id="tap-player-1" @click="hitPlayer(index == 0 ? 1 : 0)">Hit Player 2</button>
     </div>
   </div>
 </template>
@@ -43,11 +36,6 @@
       racers: racersRef
     },
     created: function () {
-      let key = []
-      this.racers.forEach(listracer => {
-          key.push(listracer[".key"])
-      })
-      this.nameKey = key
       swal({
         title: 'Auto close alert!',
         text: 'I will close in 1 seconds.',
@@ -65,25 +53,43 @@
       })
     },
     updated: function () {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         if(this.racers["0"].position>=1100){
-          alert(store.state.username)
+          swal({
+            title: 'Finish!',
+            imageUrl: 'https://usatftw.files.wordpress.com/2015/02/dancecamdude2.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            animation: false
+          })
           racersRef
-          .child(this.nameKey[0])
+          .child(key[0])
           .child('position')
           .set(0)
           racersRef
-          .child(this.nameKey[1])
+          .child(key[1])
           .child('position')
           .set(0)
         }
         if(this.racers["1"].position>=1100){
-          alert(store.state.username)
+          swal({
+            title: 'Finish win!',
+            imageUrl: 'https://usatftw.files.wordpress.com/2015/02/dancecamdude2.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            animation: false
+          })
           racersRef
-          .child(this.nameKey[0])
+          .child(key[0])
           .child('position')
           .set(0)
           racersRef
-          .child(this.nameKey[1])
+          .child(key[1])
           .child('position')
           .set(0)
         }
@@ -96,16 +102,24 @@
     },
     methods: {
       moveForward (index) {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         racersRef
-          .child(this.nameKey[index])
+          .child(key[index])
           .child('position')
           .set(this.racers[index].position + 20)
       },
       hitPlayer (index) {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         racersRef
-          .child(this.nameKey[index])
+          .child(key[index])
           .child('position')
-          .set(this.racers[index].position - 10)
+          .set(this.racers[index].position - 20)
       },
     }
   }

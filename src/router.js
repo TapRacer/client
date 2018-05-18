@@ -19,6 +19,11 @@ export default new Router({
       component: Login
     },
     {
+      path: '/arena',
+      name: 'Home',
+      component: Home
+    },
+    {
       path: '/lobby',
       name: 'lobby',
       component: Lobby
