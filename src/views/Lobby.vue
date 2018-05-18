@@ -10,19 +10,28 @@
           <div row>
             <h3>Room</h3>
             <div class="col-md">
-              <div class="radio">
-                <label><input type="radio" name="optradio">Room 1 <span class="label label-primary">2/3</span></label>
+              <div class="radio" v-if="one.length == '2'">
+                <label><input disabled value="One" v-model="picked" type="radio" name="optradio">Room 1 <span class="label label-primary">{{ one.length }}/2</span></label>
               </div>
-              <div class="radio">
-                <label><input type="radio" name="optradio">Room 2 <span class="label label-primary">2/3</span></label>
+              <div class="radio" v-if="one.length != '2'">
+                <label><input value="One" v-model="picked" type="radio" name="optradio">Room 1 <span class="label label-primary">{{ one.length }}/2</span></label>
               </div>
-              <div class="radio">
-                <label><input type="radio" name="optradio">Room 3 <span class="label label-primary">2/3</span></label>
+              <div class="radio" v-if="two.length == '2'">
+                <label><input disabled value="Two" v-model="picked" type="radio" name="optradio">Room 2 <span class="label label-primary">{{ two.length }}/2</span></label>
+              </div>
+              <div class="radio" v-if="two.length != '2'">
+                <label><input value="Two" v-model="picked" type="radio" name="optradio">Room 2 <span class="label label-primary">{{ two.length }}/2</span></label>
+              </div>
+              <div class="radio" v-if="three.length == '2'">
+                <label><input disabled value="Three" v-model="picked" type="radio" name="optradio">Room 3 <span class="label label-primary">{{ three.length }}/2</span></label>
+              </div>
+              <div class="radio" v-if="three.length != '2'">
+                <label><input value="Three" v-model="picked" type="radio" name="optradio">Room 3 <span class="label label-primary">{{ three.length }}/2</span></label>
               </div>
             </div>
           </div>
           <div row>
-            <button type="submit" class="btn btn-danger" @click="start">Start Match</button>
+            <button type="submit" class="btn btn-danger" @click="newPlayer">Start Match</button>
           </div>
         </div>
         <div class="col-md-8">
@@ -39,27 +48,36 @@
 </template>
 
 <script>
-  $("input:checkbox").on("click", function() {
-    // in the handler, 'this' refers to the box clicked on
-    var $box = $(this);
-    if ($box.is(":checked")) {
-      // the name of the box is retrieved using the .attr() method
-      // as it is assumed and expected to be immutable
-      var group = "input:checkbox[name='" + $box.attr("name") + "']";
-      // the checked state of the group/box on the other hand will change
-      // and the current value is retrieved using .prop() method
-      $(group).prop("checked", false);
-      $box.prop("checked", true);
-    } else {
-      $box.prop("checked", false);
-    }
-  });
+  import { db } from '@/firebase.js'
+  import store from '@/store.js'
+
   export default {
     name: "lobby",
-    methods: {
-      start() {
-        alert("hello");
+    data: function () {
+      return {
+        picked: '',
+        room: {
+            name: localStorage.getItem('username'),
+            position: 0,
+        }
       }
+    },
+    firebase: {
+      one : db.ref('One'),
+      two: db.ref('Two'),
+      three: db.ref('Three')
+    },
+    methods: {
+      newPlayer () {
+        const racersRef = db.ref(this.picked)
+        racersRef.push(this.room)
+        store.commit('changeArena', this.picked)
+        localStorage.setItem('arena', this.picked)
+        this.$router.push({ name: 'Home' })
+      },
+    },
+    created: function () {
+      store.commit('changeUsername', this.room.name)
     }
   };
 </script>
