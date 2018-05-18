@@ -6,8 +6,11 @@
 
 <style lang="scss">
   body {
-    margin: 0;
-    padding: 0;
     font-family: sans-serif;
+    background-image: url('http://bgfons.com/uploads/grass/grass_texture223.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 </style>
