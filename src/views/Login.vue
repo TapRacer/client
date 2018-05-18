@@ -1,10 +1,9 @@
 <template>
-  <div >   
+  <div>   
     <form class="login-box">
       <div class="logo">
         <h1>Tap Racer</h1>
       </div>
-
       <div class="form-group">
         <input type="text" class="border-btn form-control" placeholder="Enter name" v-model="name">
       </div>
@@ -19,7 +18,6 @@
 
 <script>
 export default {
-  
 }
 </script>
 
@@ -41,7 +39,6 @@ export default {
 .log-btn {
   background-color: #FA0012;
   color: white;
-  
 }
 .border-btn {
   border: 2px solid #231f20;
@@ -51,7 +48,8 @@ export default {
     position: fixed;
     width: 33%;
     top: 10%;
-    left: 33%;
+    left: 33%
   }
 }
+
 </style>
