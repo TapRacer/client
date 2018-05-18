@@ -1,11 +1,11 @@
 <template>
-  <div>   
+  <div>
     <form class="login-box">
       <div class="logo">
         <h1>Tap Racer</h1>
       </div>
       <div class="form-group">
-        <input type="text" class="border-btn form-control" placeholder="Enter name" v-model="name">
+        <input type="text" class="border-btn form-control" placeholder="Enter name">
       </div>
       <button type="submit" class="btn log-btn btn-block border-btn" @click="login">Start</button>
     </form>
