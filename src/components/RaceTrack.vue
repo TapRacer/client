@@ -24,9 +24,10 @@
         <button class="btn btn-primary" type="button" id="tap-player-2" @click="hitPlayer1()">Hit Player 1</button>
       </div>
     </div>
-    <div class="container" v-for="(racer,index) in racers" :no="index" :key="racer.name" v-if="racer.name == button">
-      <button type="button" id="tap-player-1" @click="moveForward(index)">Player 1</button>
-      <button type="button" id="tap-player-1" @click="hitPlayer(index == 0 ? 1 : 0)">Hit Player 2</button>
+    <div class="container" v-for="(racer,index) in racers" :no="index" :key="racer.name" v-if="racer.name == button && racers.length == 2">
+      <button type="button" id="tap-player-1" @click="moveForward(index)">Move</button>
+      <button v-if="index==1" type="button" id="tap-player-1" @click="hitPlayer(0)">Hit Enemy</button>
+      <button v-if="index==0" type="button" id="tap-player-1" @click="hitPlayer(1)">Hit Enemy</button>
     </div>
   </div>
 </template>
@@ -44,11 +45,6 @@
       racers: racersRef
     },
     created: function () {
-      let key = []
-      this.racers.forEach(listracer => {
-          key.push(listracer[".key"])
-      })
-      this.nameKey = key
       swal({
         title: 'Auto close alert!',
         text: 'I will close in 1 seconds.',
@@ -66,25 +62,29 @@
       })
     },
     updated: function () {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         if(this.racers["0"].position>=1100){
           alert(store.state.username)
           racersRef
-          .child(this.nameKey[0])
+          .child(key[0])
           .child('position')
           .set(0)
           racersRef
-          .child(this.nameKey[1])
+          .child(key[1])
           .child('position')
           .set(0)
         }
         if(this.racers["1"].position>=1100){
           alert(store.state.username)
           racersRef
-          .child(this.nameKey[0])
+          .child(key[0])
           .child('position')
           .set(0)
           racersRef
-          .child(this.nameKey[1])
+          .child(key[1])
           .child('position')
           .set(0)
         }
@@ -97,16 +97,24 @@
     },
     methods: {
       moveForward (index) {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         racersRef
-          .child(this.nameKey[index])
+          .child(key[index])
           .child('position')
           .set(this.racers[index].position + 20)
       },
       hitPlayer (index) {
+        let key = []
+        this.racers.forEach(listracer => {
+            key.push(listracer[".key"])
+        })
         racersRef
-          .child(this.nameKey[index])
+          .child(key[index])
           .child('position')
-          .set(this.racers[index].position - 10)
+          .set(this.racers[index].position - 20)
       },
     }
   }
