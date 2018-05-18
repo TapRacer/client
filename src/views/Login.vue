@@ -7,17 +7,25 @@
       <div class="form-group">
         <input type="text" class="border-btn form-control" placeholder="Enter name" v-model="name">
       </div>
-      <div class="form-group">
-        <input type="password" class="border-btn form-control" placeholder="Enter password" v-model="password">
-      </div>
-      <button type="submit" class="btn log-btn btn-block border-btn" v-on:click="login">Login</button>
-      <button v-on:click="loginfb()" class="btn btn-primary btn-block border-btn">Login with Facebook</button>
+      <button type="submit" class="btn log-btn btn-block border-btn" @click="login">Start</button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
+  data: function () {
+    return {
+      name: ''
+    }
+  },
+  methods: {
+    login(){
+      localStorage.setItem('username', this.name)
+      localStorage.setItem('arena', 'One')
+      this.$router.push({ name: 'lobby' })
+    }
+  }
 }
 </script>
 
